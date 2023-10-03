@@ -17,6 +17,8 @@ vim.keymap.set("n", "<leader>bd", "<Cmd>bdelete<CR>")
 --open window horizantally
 vim.keymap.set("n", "<leader>w|", "<Cmd>Neotree toggle<CR>")
 
+vim.keymap.set('n', 'gr', function() require('telescope.builtin').lsp_references() end)
+map('n', 'ld', '<cmd>Telescope lsp_definitions<CR>', { noremap = true })
 -- Why, why, why
 map("n", "Y", "y$")
 

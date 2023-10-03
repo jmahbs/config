@@ -58,9 +58,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "K", vim.lsp.buf.hover, opts)
     map("i", "<C-k>", vim.lsp.buf.signature_help, opts)
     map("n", "<leader>r", vim.lsp.buf.rename, opts)
-    -- hopefully this works // it does work but would be nice if telescope was opened for it...
-    map("n", "gr", vim.lsp.buf.references, opts)
-
+    map("n", "gr", "<cmd>Telescope lsp_references<cr>")
+    map("n", "gi", function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client.server_capabilities.documentHighlightProvider then
       autocmd_highlight(args.buf)
