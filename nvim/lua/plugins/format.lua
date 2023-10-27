@@ -25,6 +25,12 @@ return {
           formatter = formatters.eslint_d_fix
         })
       },
+      typescriptreact = {
+        formatters.if_file_exists({
+          pattern = ".eslintrc.*",
+          formatter = formatters.eslint_d_fix,
+        })
+      }
     }
     opts.partial_update = false
   end,

@@ -52,6 +52,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   group = augroup_lsp_config,
   callback = function(args)
     local opts = { buffer = args.buf }
+    map("n", "<leader>c", vim.lsp.buf.code_action, opts)
     map("n", "gd", vim.lsp.buf.definition, opts)
     map("n", "gD", vim.lsp.buf.declaration, opts)
     map("n", "gt", vim.lsp.buf.type_definition, opts)
@@ -120,6 +121,7 @@ return {
           },
         },
         tsserver = {},
+        -- not convinced this is doing anything
         eslint = {
           settings = {
             workingDirectory = { mode = 'auto' },

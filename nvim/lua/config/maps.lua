@@ -9,6 +9,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
   command = [[tnoremap <buffer> <C-o> <C-\><C-n>]],
 })
 
+vim.keymap.set("n", "<leader>w", "<Cmd>w<CR>")
 -- toggle neo tree
 vim.keymap.set("n", "<leader>e", "<Cmd>Neotree toggle<CR>")
 

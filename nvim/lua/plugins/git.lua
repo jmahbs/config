@@ -7,5 +7,6 @@ return {
     keys = {
       { "<leader>gg", "<Cmd>LazyGit<CR>" }
     }
-  }
+  },
+  { "lewis6991/gitsigns.nvim" }
 }
