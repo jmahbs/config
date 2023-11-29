@@ -34,6 +34,24 @@ return {
             alternate = "{}.go",
           },
         },
+        ["src/*.ts"] = {
+          ["*.ts"] = {
+            type = "source",
+            alternate = "{}.test.ts",
+          },
+          ["*.test.ts"] = {
+            type = "test",
+            alternate = "{}.ts",
+          },
+          ["*.tsx"] = {
+            type = "source",
+            alternate = "{}.test.tsx"
+          },
+          ["*.test.tsx"] = {
+            type = "test",
+            alternate = "{}.tsx"
+          }
+        },
       }
     end,
   },
@@ -111,4 +129,5 @@ return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' }
   },
+  { 'takac/vim-hardtime' }
 }

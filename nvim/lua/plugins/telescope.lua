@@ -55,63 +55,7 @@ return {
     { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
     { "<leader>sR", "<cmd>Telescope resume<cr>",      desc = "Resume" },
     { "<leader>sw", "<cmd>Telescope grep_string<cr>", { word_match = "-w" }, desc = "Word (root dir)" },
-    --  { "<leader>sW", Util.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
-    -- {
-    --   "<leader>sw",
-    --   Util.telescope("grep_string"),
-    --   mode = "v",
-    --   desc =
-    --   "Selection (root dir)"
-    -- },
-    -- {
-    --   "<leader>sW",
-    --   Util.telescope("grep_string", { cwd = false }),
-    --   mode = "v",
-    --   desc =
-    --   "Selection (cwd)"
-    -- },
-    -- {
-    --   "<leader>uC",
-    --   Util.telescope("colorscheme", { enable_preview = true }),
-    --   desc =
-    --   "Colorscheme with preview"
-    -- },
-    -- {
-    --   "<leader>ss",
-    --   Util.telescope("lsp_document_symbols", {
-    --     symbols = {
-    --       "Class",
-    --       "Function",
-    --       "Method",
-    --       "Constructor",
-    --       "Interface",
-    --       "Module",
-    --       "Struct",
-    --       "Trait",
-    --       "Field",
-    --       "Property",
-    --     },
-    --   }),
-    --   desc = "Goto Symbol",
-    -- },
-    -- {
-    --   "<leader>sS",
-    --   Util.telescope("lsp_dynamic_workspace_symbols", {
-    --     symbols = {
-    --       "Class",
-    --       "Function",
-    --       "Method",
-    --       "Constructor",
-    --       "Interface",
-    --       "Module",
-    --       "Struct",
-    --       "Trait",
-    --       "Field",
-    --       "Property",
-    --     },
-    --   }),
-    --    desc = "Goto Symbol (Workspace)",
-    -- },
+    { "<leader>st", "<cmd>Telescope treesitter<cr>",  desc = "Tree Sitter" },
   },
   opts = {
     defaults = {

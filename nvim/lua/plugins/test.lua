@@ -1,5 +1,5 @@
 local function is_test_run_buf()
-  local test_matchers = { "go test", "richgo test", "gotestsum", }
+  local test_matchers = { "go test", "richgo test", "gotestsum", "jest" }
   local buf_name = vim.api.nvim_buf_get_name(0)
   for _, matcher in ipairs(test_matchers) do
     if string.find(buf_name, matcher) then
@@ -30,7 +30,11 @@ return {
       vim.g["test#go#gotest#executable"] = "gotestsum --"
     elseif vim.fn.executable "richgo" == 1 then
       vim.g["test#go#runner"] = "richgo"
+    elseif vim.fn.executable "jest" == 1 then
+      vim.g["test#javascript#runner"] = "jest"
+      vim.g["test#javascript#runner#executable"] = "npm run test"
     end
+
 
     set_test_split_size()
     vim.g["test#strategy"] = "neovim"

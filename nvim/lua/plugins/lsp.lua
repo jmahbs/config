@@ -54,7 +54,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local opts = { buffer = args.buf }
     map("n", "<leader>c", vim.lsp.buf.code_action, opts)
     map("n", "gd", vim.lsp.buf.definition, opts)
-    map("n", "gD", vim.lsp.buf.declaration, opts)
+    map("n", "gD", "<cmd>Telescope lsp_declaration<cr>", opts)
     map("n", "gt", vim.lsp.buf.type_definition, opts)
     map("n", "K", vim.lsp.buf.hover, opts)
     map("i", "<C-k>", vim.lsp.buf.signature_help, opts)

@@ -15,6 +15,7 @@ vim.keymap.set("n", "<leader>e", "<Cmd>Neotree toggle<CR>")
 
 --delete buffer
 vim.keymap.set("n", "<leader>bd", "<Cmd>bdelete<CR>")
+vim.keymap.set("n", "<leader>bD", "<Cmd>bdelete!<CR>")
 --open window horizantally
 vim.keymap.set("n", "<leader>w|", "<Cmd>Neotree toggle<CR>")
 
@@ -33,3 +34,9 @@ map("n", "<C-i>", "<C-i>zz")
 -- Jumplist mutations
 map("n", "j", [[(v:count >= 5 ? "m'" . v:count : "") . "j"]], { expr = true })
 map("n", "k", [[(v:count >= 5 ? "m'" . v:count : "") . "k"]], { expr = true })
+
+for _, mode in pairs({ 'n', 'i', 'v', 'x' }) do
+  for _, key in pairs({ '<Up>', '<Down>', '<Left>', '<Right>' }) do
+    vim.keymap.set(mode, key, '<nop>')
+  end
+end
