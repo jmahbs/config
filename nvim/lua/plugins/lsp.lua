@@ -121,7 +121,6 @@ return {
           },
         },
         tsserver = {},
-        -- not convinced this is doing anything
         eslint = {
           settings = {
             workingDirectory = { mode = 'auto' },

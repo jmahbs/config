@@ -1,5 +1,7 @@
 return {
-  "tpope/vim-obsession",
+  { "tpope/vim-obsession" },
+
+  { "tpope/vim-repeat",   event = "VeryLazy" },
 
   {
     "tpope/vim-surround",
@@ -105,17 +107,18 @@ return {
       }
     end,
   },
+
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
     opts = {},
   },
+
   {
     "folke/todo-comments.nvim",
     cmd = { "TodoTrouble", "TodoTelescope" },
     event = { "BufReadPost", "BufNewFile" },
     config = true,
-    -- stylua: ignore
     keys = {
       { "]t",         function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
       { "[t",         function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
@@ -125,9 +128,25 @@ return {
       { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",    desc = "Todo/Fix/Fixme" },
     },
   },
+
   {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons' }
+    "ggandor/leap.nvim",
+    enabled = true,
+    keys = {
+      { "s",  mode = { "n", "x", "o" }, desc = "Leap forward to" },
+      { "S",  mode = { "n", "x", "o" }, desc = "Leap backward to" },
+      { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
+    },
+    config = function(_, opts)
+      local leap = require("leap")
+      for k, v in pairs(opts) do
+        leap.opts[k] = v
+      end
+      leap.add_default_mappings(true)
+      vim.keymap.del({ "x", "o" }, "x")
+      vim.keymap.del({ "x", "o" }, "X")
+    end,
   },
-  { 'takac/vim-hardtime' }
+
+  { 'takac/vim-hardtime' },
 }

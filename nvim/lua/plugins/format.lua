@@ -7,9 +7,9 @@ return {
     "neovim/nvim-lspconfig",
   },
   opts = function(_, opts)
-    local cached_stylua_configs = {}
-    local find_stylua_config = function()
-    end
+    -- local cached_stylua_configs = {}
+    -- local find_stylua_config = function()
+    -- end
 
     local formatters = require "format-on-save.formatters"
 
@@ -32,6 +32,8 @@ return {
         })
       }
     }
-    opts.partial_update = false
+    opts.experiments = {
+      partial_update = 'diff', -- or 'line-by-line'
+    }
   end,
 }

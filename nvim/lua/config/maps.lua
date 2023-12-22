@@ -35,7 +35,7 @@ map("n", "<C-i>", "<C-i>zz")
 map("n", "j", [[(v:count >= 5 ? "m'" . v:count : "") . "j"]], { expr = true })
 map("n", "k", [[(v:count >= 5 ? "m'" . v:count : "") . "k"]], { expr = true })
 
-for _, mode in pairs({ 'n', 'i', 'v', 'x' }) do
+for _, mode in pairs({ 'n', 'v', 'x' }) do
   for _, key in pairs({ '<Up>', '<Down>', '<Left>', '<Right>' }) do
     vim.keymap.set(mode, key, '<nop>')
   end
