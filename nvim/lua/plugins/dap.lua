@@ -1,138 +1,86 @@
-local function has_dap_configured()
-  local dap = prequire "dap"
-  if dap then
-    return dap.configurations[vim.bo.filetype] ~= nil
-  end
-  return false
-end
-
-local function starts_with_prefix(s, prefix)
-  return string.sub(s, 1, string.len(prefix)) == prefix
-end
-
-local function is_dap_window()
-  return starts_with_prefix(vim.bo.filetype, "dapui_")
-      or starts_with_prefix(vim.bo.filetype, "dap-")
-end
-
 return {
-  {
-    "mfussenegger/nvim-dap",
-    event = { "VeryLazy" },
-    init = function()
-      extend_palette {
-        {
-          name = "dap continue",
-          cmd = "lua require('dap').continue()",
-          show = has_dap_configured,
-        },
-        {
-          name = "dap toggle breakpoint",
-          cmd = "lua require('dap').toggle_breakpoint()",
-          show = has_dap_configured,
-        },
-        {
-          name = "dap list breakpoints",
-          cmd = "lua require('fzf-lua').dap_breakpoints()",
-          show = has_dap_configured,
-        },
-        {
-          name = "dap clear breakpoints",
-          cmd = "lua require('dap').clear_breakpoints()",
-          show = has_dap_configured,
-        },
-      }
-    end,
-  },
+  "mfussenegger/nvim-dap",
 
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = {
-      "mfussenegger/nvim-dap",
+  dependencies = {
+
+    -- fancy UI for the debugger
+    {
+      "rcarriga/nvim-dap-ui",
+      dependencies = { "nvim-neotest/nvim-nio" },
+      -- stylua: ignore
+      keys = {
+        { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
+        { "<leader>de", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } },
+      },
+      opts = {},
+      config = function(_, opts)
+        -- setup dap config by VsCode launch.json file
+        -- require("dap.ext.vscode").load_launchjs()
+        local dap = require("dap")
+        local dapui = require("dapui")
+        dapui.setup(opts)
+        dap.listeners.after.event_initialized["dapui_config"] = function()
+          dapui.open({})
+        end
+        dap.listeners.before.event_terminated["dapui_config"] = function()
+          dapui.close({})
+        end
+        dap.listeners.before.event_exited["dapui_config"] = function()
+          dapui.close({})
+        end
+      end,
     },
-    event = { "VeryLazy" },
-    opts = {
-      icons = {
-        expanded = "▾",
-        collapsed = "▸",
-        current_frame = ">",
-      },
-      controls = {
-        enabled = true,
-        element = "repl",
-        icons = {
-          pause = "⏸ ",
-          play = "▶",
-          step_into = "↧",
-          step_over = "↷",
-          step_out = "↥",
-          step_back = "↤",
-          run_last = "↻",
-          terminate = "▣",
-        },
-      },
-      expand_lines = false,
-      layouts = {
-        {
-          elements = {
-            {
-              id = "scopes",
-              size = 0.50,
-            },
-            {
-              id = "breakpoints",
-              size = 0.10,
-            },
-            {
-              id = "stacks",
-              size = 0.15,
-            },
-            {
-              id = "watches",
-              size = 0.25,
-            },
-          },
-          position = "left",
-          size = 80,
-        },
-        {
-          elements = {
-            {
-              id = "repl",
-              size = 0.5,
-            },
-            {
-              id = "console",
-              size = 0.5,
-            },
-          },
-          position = "bottom",
-          size = 10,
+
+    -- virtual text for the debugger
+    {
+      "theHamsta/nvim-dap-virtual-text",
+      opts = {},
+    },
+
+    -- which key integration
+    {
+      "folke/which-key.nvim",
+      optional = true,
+      opts = {
+        defaults = {
+          ["<leader>d"] = { name = "+debug" },
         },
       },
     },
-    init = function()
-      local dap, dapui = require "dap", require "dapui"
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
-      extend_palette {
-        {
-          name = "dap toggle ui",
-          cmd = "lua require('dapui').toggle()",
-          show = function()
-            return has_dap_configured() or is_dap_window()
-          end,
-        },
-      }
-    end,
   },
 
+  -- stylua: ignore
+  keys = {
+    { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+    { "<leader>db", function() require("dap").toggle_breakpoint() end,                                    desc = "Toggle Breakpoint" },
+    { "<leader>dc", function() require("dap").continue() end,                                             desc = "Continue" },
+    { "<leader>da", function() require("dap").continue({ before = get_args }) end,                        desc = "Run with Args" },
+    { "<leader>dC", function() require("dap").run_to_cursor() end,                                        desc = "Run to Cursor" },
+    { "<leader>dg", function() require("dap").goto_() end,                                                desc = "Go to Line (No Execute)" },
+    { "<leader>di", function() require("dap").step_into() end,                                            desc = "Step Into" },
+    { "<leader>dj", function() require("dap").down() end,                                                 desc = "Down" },
+    { "<leader>dk", function() require("dap").up() end,                                                   desc = "Up" },
+    { "<leader>dl", function() require("dap").run_last() end,                                             desc = "Run Last" },
+    { "<leader>do", function() require("dap").step_out() end,                                             desc = "Step Out" },
+    { "<leader>dO", function() require("dap").step_over() end,                                            desc = "Step Over" },
+    { "<leader>dp", function() require("dap").pause() end,                                                desc = "Pause" },
+    { "<leader>dr", function() require("dap").repl.toggle() end,                                          desc = "Toggle REPL" },
+    { "<leader>ds", function() require("dap").session() end,                                              desc = "Session" },
+    { "<leader>dt", function() require("dap").terminate() end,                                            desc = "Terminate" },
+    { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc = "Widgets" },
+  },
 
+  config = function()
+    local Config = require("lazyvim.config")
+    vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
+
+    for name, sign in pairs(Config.icons.dap) do
+      sign = type(sign) == "table" and sign or { sign }
+      vim.fn.sign_define(
+        "Dap" .. name,
+        { text = sign[1], texthl = sign[2] or "DiagnosticInfo", linehl = sign[3], numhl = sign[3] }
+      )
+    end
+  end,
 }
+

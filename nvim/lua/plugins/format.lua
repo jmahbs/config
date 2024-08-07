@@ -7,10 +7,6 @@ return {
     "neovim/nvim-lspconfig",
   },
   opts = function(_, opts)
-    -- local cached_stylua_configs = {}
-    -- local find_stylua_config = function()
-    -- end
-
     local formatters = require "format-on-save.formatters"
 
     opts.formatter_by_ft = {
