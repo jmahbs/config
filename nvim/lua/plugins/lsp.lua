@@ -6,7 +6,7 @@ local border = "rounded"
 -- vim.lsp.handlers["textDocument/signatureHelp"] =
 --     vim.lsp.with(vim.lsp.handlers.signature_help, { border = border })
 
-vim.diagnostic.config {
+vim.diagnostic.config({
   virtual_text = false,
   float = {
     focusable = false,
@@ -22,7 +22,7 @@ vim.diagnostic.config {
     scope = "cursor",
     border = border,
   },
-}
+})
 
 map("n", "]e", vim.diagnostic.goto_next)
 map("n", "[e", vim.diagnostic.goto_prev)
@@ -30,7 +30,7 @@ map("n", "[e", vim.diagnostic.goto_prev)
 local augroup_highlight = vim.api.nvim_create_augroup("UserLspHighlight", {})
 
 local function clear_autocmd_highlight(bufnr)
-  vim.api.nvim_clear_autocmds { buffer = bufnr, group = augroup_highlight }
+  vim.api.nvim_clear_autocmds({ buffer = bufnr, group = augroup_highlight })
 end
 
 local function autocmd_highlight(bufnr)
@@ -61,7 +61,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("i", "<C-k>", vim.lsp.buf.signature_help, opts)
     map("n", "<leader>r", vim.lsp.buf.rename, opts)
     map("n", "gr", "<cmd>Telescope lsp_references<cr>")
-    map("n", "gi", function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end)
+    map("n", "gi", function()
+      require("telescope.builtin").lsp_implementations({ reuse_win = true })
+    end)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     if client.server_capabilities.documentHighlightProvider then
       autocmd_highlight(args.buf)
@@ -77,7 +79,7 @@ vim.api.nvim_create_autocmd("LspDetach", {
   group = augroup_lsp_config,
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if client.supports_method "textDocument/documentHighlight" then
+    if client.supports_method("textDocument/documentHighlight") then
       clear_autocmd_highlight(args.buf)
     end
   end,
@@ -154,17 +156,17 @@ return {
         tsserver = {},
         eslint = {
           settings = {
-            workingDirectory = { mode = 'auto' },
+            workingDirectory = { mode = "auto" },
           },
         },
       }
     end,
     config = function(_, opts)
-      require("neodev").setup {}
+      -- require("neodev").setup {}
       local capabilities =
           require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-      local lspconfig = require "lspconfig"
+      local lspconfig = require("lspconfig")
       for server, config in pairs(opts.servers) do
         local merged = vim.tbl_extend("error", {
           capabilities = capabilities,
